@@ -1,0 +1,152 @@
+---
+title: "Programa Nacional de Prevención y Control de las ETVs | CENAPRECE | 2026"
+format: 
+  dashboard:
+    scrolling: true
+    nav-buttons: [twitter, github, facebook]
+    logo: https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg
+theme: custom.scss     
+---
+
+```{r setup, echo=FALSE}
+# Step 1. load the dengue dataset ####
+path_sinave <- "/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/denv/2026/DENGUE2_.txt"
+
+x <- data.table::fread(path_sinave,
+                       #select = vect_cols2,
+                       encoding = "Latin-1",
+                       quote="",
+                       fill=TRUE)
+# Step 2. load the functions ####
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/heatmap_confirmados.R")
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/heatmap_hospitalizados.R")
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/heatmap_dengue.R")
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/static_bump_map.R")
+source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiological_channel.R")
+```
+
+# **Arbovirosis**
+
+::: panel-tabset
+### [**Panorama Epidemiológico Dengue**]{style="color:#611232"}
+
+<html>
+
+<head>
+
+```{=html}
+<style>
+</style>
+```
+</head>
+
+<body>
+
+<div>
+
+<h2>
+
+</h2>
+
+<p>
+
+</p>
+
+::: {style="display: grid; width: 1px; grid-template-columns: 750px 750px; align-items: start; justify-content: space-between;"}
+
+
+<div>
+
+#### [**Casos confirmados**]{style="color:#611232"}
+
+```{r treemap,out.width="100%", out.height="100%"}
+densnv::mp_treemap(country = TRUE,
+                   year = 2026,
+                   snv_dataset = x)
+```
+
+
+</div>
+
+
+<div>
+
+#### [**Casos confirmados y serotipos**]{style="color:#611232"}
+
+```{r casos_serotipos,out.width="100%", out.height="100%"}
+library(magrittr)
+boldenr::plot_state_serotype(dataset = x, 
+                                  year = 2026, 
+                                  x_serotype  = 0.5, 
+                                  y_serotype = 0.17, 
+                                  scale_serotype = 1.7)
+```
+
+</div>
+
+
+
+:::
+
+#### [**Casos Confirmados por Estado**]{style="color:#611232"}
+
+```{r heatmap_confirmados_state}
+heatmap_confirmados(dataset = x, 
+                    year = 2026, 
+                    size_text = 3, 
+                    state = TRUE,
+                    alpha_text = .2,
+                    EDO = TRUE)
+```
+
+#### [**Casos Confirmados por Estado**]{style="color:#611232"}
+
+```{r bumpmap_national, out.width="100%", out.height="90%"}
+static_bump_map(dataset = x,
+                year = "2026",
+                state = TRUE,
+                size_text_value = 2,
+                size_text_country = 2,
+                country_text_x = 0.5,
+                country_text_y = 0.8,
+                line_size = 1.5,
+                pal_vir = "viridis")
+```
+
+#### [**Casos Confirmados por Municipio**]{style="color:#611232"}
+
+```{r heatmap_confirmados_mun}
+heatmap_dengue(dataset = x,
+               state = NULL,
+               year = "2026",
+               hospitalizados = FALSE,
+               status = 2)
+```
+
+#### [**Casos Hospitalizados por Municipio**]{style="color:#611232"}
+
+```{r heatmap_hospitalizados_mun}
+heatmap_dengue(dataset = x,
+               state = NULL,
+               year = "2026",
+               status = 1,
+               hospitalizados = TRUE)
+```
+
+#### [**Canal Epidemiológico por Estado**]{style="color:#611232"}
+
+```{r epidemiological_channel_by_state}
+epidemiological_channel(data = x, year = "2026")
+```
+
+</div>
+
+</body>
+
+</html>
+
+### [**Focos de Transmisión Activa**]{style="color:#611232"}
+
+### [**Focos de Transmisión Persistente**]{style="color:#611232"}
+
+:::
