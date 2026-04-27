@@ -1,0 +1,226 @@
+---
+title: "Programa de Prevención y Control de Arbovirosis | 2026 | Tijuana"
+format: 
+  dashboard:
+    nav-buttons: [twitter, github, facebook]
+    logo: https://framework-gb.cdn.gob.mx/gobmx/img/logo_blanco.svg
+theme: custom.scss
+---
+
+# [**Focos de Transmisión**]{style="font-size:2pt"}
+
+::: panel-tabset
+
+### [**2026**]{style="color:#990000"}
+
+```{=html}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Contenedor principal con scroll - tres COLUMNAS */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Tres COLUMNAS iguales */
+  gap: 25px;
+  margin: 20px 0;
+  max-height: 85vh;          /* Altura máxima para scroll */
+  overflow-y: auto;          /* Scroll vertical */
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fafafa;
+  align-items: start;
+}
+
+/* Cada columna es un contenedor flexible que apila sus elementos */
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Título de columna */
+.column-header {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  padding: 8px;
+  background-color: #772953;
+  color: white;
+  border-radius: 6px;
+  margin: 0;
+}
+
+/* Estilo para cada tarjeta de mapa */
+.grid-card {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 12px;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.grid-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* Asegura que los mapas tengan tamaño consistente */
+.grid-card .html-widget,
+.grid-card iframe {
+  width: 100% !important;
+  height: 400px !important;
+  border-radius: 8px;
+}
+
+/* Responsive: en móviles, una sola columna */
+@media (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: 1fr;  /* Una columna en móvil */
+    max-height: 70vh;
+    gap: 15px;
+    padding: 10px;
+  }
+  .column-header {
+    font-size: 1rem;
+  }
+  .grid-card .html-widget,
+  .grid-card iframe {
+    height: 300px !important;
+  }
+}
+</style>
+```
+::::::::::::::::::::: responsive-grid
+
+<div class="columna">
+<div class="column-header"> Focos de Transmisión Activa </div>
+
+
+::: grid-card
+
+```{r focos_transmision_activa, echo=FALSE}
+
+# Step 1. make the tible link ####
+link <- tibble::tibble(CVE_ENT = c("25", "26", "27", "30"),
+                       link = c("https://dapper-bubblegum-16b79a.netlify.app",
+                                "https://magnificent-boba-378005.netlify.app",
+                                "https://polite-lily-6140a2.netlify.app",
+                                "https://marvelous-pie-045c03.netlify.app"))
+
+# Step 2. left joint ####
+mex_link <- dplyr::left_join(x = link,
+                             y = rgeomex::AGEE_inegi19_mx,
+                             by = "CVE_ENT") |>
+    dplyr::mutate(Estado = paste0(": <a href=", 
+                                  link,">", 
+                                  NOMGEO, "</a>")) |>
+    as.data.frame() |>
+    sf::st_set_geometry(value = "geometry") 
+
+
+
+
+# Step 1. load the AGEE ####
+mex <- rgeomex::AGEE_inegi19_mx |>
+    dplyr::select(-NOMGEO)
+
+# map #### 
+mex_link |>
+    mapview::mapview(popup = "Estado",
+                     legend = FALSE,
+                     color = "#e6d194", 
+                     alpha.regions = 1,
+                     col.regions = "#691C32")
+```
+:::
+
+
+</div>
+<div class="columna"><div class="column-header"> Focos de Transmision Persistente </div>
+
+::: grid-card
+
+```{r focos_transmision_persistente, echo=FALSE}
+# Step 1. make the tible link ####
+link <- tibble::tibble(CVE_ENT = c("01","02", "03", "04", "05",
+                                   
+                                   "06", "07","08", "09", "10",
+                                   
+                                   "11", "12", "13", "14", "15",
+                                   
+                                   "16", "17", "18", "19", "20",
+                                   
+                                   "21", "22","23","24", "25",
+                                   
+                                   "26", "27", "28",
+                                   #"29",
+                                   "30",
+                                   
+                                   "31", "32"),
+                       link = c("https://unrivaled-brigadeiros-1382f3.netlify.app",  # 01
+                                "https://admirable-manatee-d63392.netlify.app",      # 02
+                                "https://resonant-lamington-213eaa.netlify.app",     # 03
+                                "https://spectacular-clafoutis-0da912.netlify.app",  # 04
+                                "https://stately-blancmange-201518.netlify.app",     # 05
+                                "https://thunderous-lokum-bd4f9a.netlify.app",       # 06
+                                "https://keen-empanada-1560f6.netlify.app",          # 07
+                                "https://candid-mermaid-0b4c86.netlify.app",         # 08
+                                "https://lustrous-chaja-e64e35.netlify.app",         # 09
+                                "https://courageous-buttercream-d9f7b9.netlify.app", # 10,
+                                "https://golden-marigold-dcf3ae.netlify.app",        # 11
+                                "https://chic-torte-96f7af.netlify.app",             # 12
+                                "https://cozy-alpaca-6a09ee.netlify.app",            # 13
+                                "https://rococo-liger-b1cb6e.netlify.app",           # 14
+                                "https://effulgent-duckanoo-42fd18.netlify.app",     # 15
+                                "https://gleeful-mousse-0d5b05.netlify.app",         # 16
+                                "https://keen-starlight-16885b.netlify.app",         # 17
+                                "https://marvelous-babka-70d1cb.netlify.app",        # 18
+                                "https://iridescent-chimera-e0ad09.netlify.app",     # 19
+                                "https://inspiring-cranachan-e486d6.netlify.app",    # 20
+                                "https://calm-phoenix-18c04a.netlify.app",           # 21
+                                "https://meek-arithmetic-311c9c.netlify.app",        # 22
+                                "https://cheerful-mousse-4505bf.netlify.app",        # 23
+                                "https://zingy-moonbeam-95d47f.netlify.app",         # 24
+                                "https://profound-buttercream-3bfee3.netlify.app",   # 25
+                                "https://polite-sunburst-1d5e9c.netlify.app",        # 26
+                                "https://peppy-granita-0a7d31.netlify.app",          # 27
+                                "https://lovely-pika-abd38d.netlify.app",            # 28
+                                # 29
+                                "https://glowing-gelato-676090.netlify.app",         # 30
+                                "https://boisterous-douhua-506ac6.netlify.app",      # 31
+                                "https://chipper-liger-bff066.netlify.app"          # 32
+                           
+                       ))
+
+# Step 3. left joint ####
+mex_link <- dplyr::left_join(x = link,
+                             y = rgeomex::AGEE_inegi19_mx,
+                             by = "CVE_ENT") |>
+    dplyr::mutate(Estado = paste0(": <a href=", 
+                                  link,">", 
+                                  NOMGEO, "</a>")) |>
+    as.data.frame() |>
+    sf::st_set_geometry(value = "geometry") 
+
+
+# map #### 
+mex_link |>
+    mapview::mapview(popup = "Estado",
+                     legend = FALSE,
+                     color = "#e6d194", 
+                     alpha.regions = 1,
+                     col.regions = "#691C32")
+```
+:::
+
+
+</div>
+:::::::::::::::::::::
+
+:::
+
+
