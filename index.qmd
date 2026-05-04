@@ -52,7 +52,7 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiolog
 
 </p>
 
-::: {style="display: grid; width: 1px; grid-template-columns: 750px 750px; align-items: start; justify-content: space-between;"}
+::: {style="display: grid; width: 1px; grid-template-columns: 800px 800px; align-items: start; justify-content: space-between;"}
 
 
 <div>
