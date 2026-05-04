@@ -240,8 +240,9 @@ epidemiological_channel(data = x, year = "2026")
 ```{r focos_transmision_activa, echo=FALSE}
 
 # Step 1. make the tible link ####
-link <- tibble::tibble(CVE_ENT = c("25", "26", "27", "30"),
-                       link = c("https://dapper-bubblegum-16b79a.netlify.app",
+link <- tibble::tibble(CVE_ENT = c("03","25", "26", "27", "30"),
+                       link = c("https://inquisitive-marshmallow-a2510b.netlify.app",
+                                "https://dapper-bubblegum-16b79a.netlify.app",
                                 "https://magnificent-boba-378005.netlify.app",
                                 "https://polite-lily-6140a2.netlify.app",
                                 "https://marvelous-pie-045c03.netlify.app"))
