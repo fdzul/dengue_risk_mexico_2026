@@ -11,7 +11,7 @@ source("~/Library/CloudStorage/Dropbox/r_developments/r_dashboards/netlify/1.2.p
 
 # data
 cdmx <- z |>
-    dplyr::filter(DES_EDO_REP == "")
+    dplyr::filter(DES_EDO_REP == "DISTRITO FEDERAL")
 
 
 #######
