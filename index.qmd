@@ -10,7 +10,7 @@ theme: custom.scss
 
 ```{r setup, echo=FALSE}
 # Step 1. load the dengue dataset ####
-path_sinave <- "/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/denv/2026/DENGUE2_.txt"
+path_sinave <- "/Users/fdzul/Documents/geocoding_mx_2026_dengue/1.data/semana_actual/DENGUE2_.txt"
 
 x <- data.table::fread(path_sinave,
                        #select = vect_cols2,
