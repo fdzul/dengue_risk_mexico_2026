@@ -28,6 +28,7 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiolog
 # **Arbovirosis**
 
 ::: panel-tabset
+
 ### [**Panorama Epidemiológico Dengue**]{style="color:#611232"}
 
 <html>
@@ -52,7 +53,7 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiolog
 
 </p>
 
-::: {style="display: grid; width: 1px; grid-template-columns: 800px 800px; align-items: start; justify-content: space-between;"}
+::: {style="display: grid; width: 1px; grid-template-columns: 700px 700px; align-items: start; justify-content: space-between;"}
 
 
 <div>
@@ -144,6 +145,407 @@ epidemiological_channel(data = x, year = "2026")
 </body>
 
 </html>
+
+
+### [**Distribucion Espacial**]{style="color:#611232"}
+
+
+```{=html}
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Contenedor principal con scroll - tres COLUMNAS */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Tres COLUMNAS iguales */
+  gap: 25px;
+  margin: 20px 0;
+  max-height: 85vh;          /* Altura máxima para scroll */
+  overflow-y: auto;          /* Scroll vertical */
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fafafa;
+  align-items: start;
+}
+
+/* Cada columna es un contenedor flexible que apila sus elementos */
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Título de columna */
+.column-header {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  padding: 8px;
+  background-color: #772953;
+  color: white;
+  border-radius: 6px;
+  margin: 0;
+}
+
+/* Estilo para cada tarjeta de mapa */
+.grid-card {
+  border: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 12px;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.grid-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+/* Asegura que los mapas tengan tamaño consistente */
+.grid-card .html-widget,
+.grid-card iframe {
+  width: 100% !important;
+  height: 400px !important;
+  border-radius: 8px;
+}
+
+/* Responsive: en móviles, una sola columna */
+@media (max-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: 1fr;  /* Una columna en móvil */
+    max-height: 70vh;
+    gap: 15px;
+    padding: 10px;
+  }
+  .column-header {
+    font-size: 1rem;
+  }
+  .grid-card .html-widget,
+  .grid-card iframe {
+    height: 300px !important;
+  }
+}
+</style>
+```
+::::::::::::::::::::: responsive-grid
+
+<div class="columna">
+<div class="column-header"> Casos Probables </div>
+
+
+::: grid-card
+
+```{r probables}
+load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+
+library(leaflet)
+library(leaflet.extras)
+
+data <- den
+data <- data |> 
+    #dplyr::select(dplyr::all_of(var)) |>
+    dplyr::mutate(n = probables) |>
+    dplyr::filter(n >= 1)
+
+
+# Paleta de color continua
+pal <- leaflet::colorNumeric(palette = viridis::viridis(10,
+                                                        option = "D"),
+                             domain = data$n)
+
+# Escala de radio proporcional
+radio <- function(x, r_min = 4, r_max = 20) {
+    r_min + (x - min(x)) / (max(x) - min(x)) * (r_max - r_min)
+}
+
+leaflet(data) |>
+    # Capas base
+    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
+    addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
+    addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
+    addProviderTiles("Esri.WorldTopoMap",     group = "Topografico") |>
+    # Círculos proporcionales
+    addCircleMarkers(
+        radius       = ~radio(n),
+        color        = "white",
+        weight       = 0.5,
+        fillColor    = ~pal(n),
+        fillOpacity  = 0.8,
+        popup = ~paste0(
+            "<b>Localidad:</b> ", cvegeo, "<br>",
+            "<b>Confirmados:</b> ", "confirmado" , "<br>",
+            "<b>Probables:</b> ", probables, "<br>",
+            "<b>DNG:</b> ", DNG, " | <b>DCSA:</b> ", DCGA, " | <b>DG:</b> ", DG, "<br>",
+            "<b>DENV2:</b> ", DENV2, " | <b>DENV3:</b> ", DENV3),
+        label = ~paste0(cvegeo, ": ", n, " Probables"),
+        labelOptions = labelOptions(
+            style = list("font-size" = "12px"),
+            textsize = "12px",
+            direction = "auto"
+        ),
+        group = "Confirmados"
+    ) |>
+    # Leyenda de color
+    addLegend(position = "bottomright",
+        pal      = pal,
+        values   = ~n,
+        title    = "Casos<br> Probables",
+        opacity  = 0.8
+    ) |>
+    # Control de capas
+    addLayersControl(baseGroups    = c("Positron", "Satelite", 
+                          "OpenStreetMap", "Dark", 
+                          "Topografico"),
+                     overlayGroups = c("Probables"), # modify
+                     options = layersControlOptions(collapsed = TRUE)) |>
+    addScaleBar(position = "bottomleft") |>
+    hideGroup("") 
+```
+
+
+:::
+
+
+</div>
+<div class="columna"><div class="column-header"> Casos Confirmados </div>
+
+::: grid-card
+
+```{r confirmados}
+load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+
+library(leaflet)
+library(leaflet.extras)
+
+data <- den
+data <- data |> 
+    #dplyr::select(dplyr::all_of(var)) |>
+    dplyr::mutate(n = confirmado) |>
+    dplyr::filter(n >= 1)
+
+
+# Paleta de color continua
+pal <- leaflet::colorNumeric(palette = viridis::viridis(10,
+                                                        option = "D"),
+                             domain = data$n)
+
+# Escala de radio proporcional
+radio <- function(x, r_min = 4, r_max = 20) {
+    r_min + (x - min(x)) / (max(x) - min(x)) * (r_max - r_min)
+}
+
+leaflet(data) |>
+    # Capas base
+    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
+    addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
+    addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
+    addProviderTiles("Esri.WorldTopoMap",     group = "Topografico") |>
+    # Círculos proporcionales
+    addCircleMarkers(
+        radius       = ~radio(n),
+        color        = "white",
+        weight       = 0.5,
+        fillColor    = ~pal(n),
+        fillOpacity  = 0.8,
+        popup = ~paste0(
+            "<b>Localidad:</b> ", cvegeo, "<br>",
+            "<b>Confirmados:</b> ", "confirmado" , "<br>",
+            "<b>Probables:</b> ", probables, "<br>",
+            "<b>DNG:</b> ", DNG, " | <b>DCSA:</b> ", DCGA, " | <b>DG:</b> ", DG, "<br>",
+            "<b>DENV2:</b> ", DENV2, " | <b>DENV3:</b> ", DENV3),
+        label = ~paste0(cvegeo, ": ", n, "Confirmado"),
+        labelOptions = labelOptions(
+            style = list("font-size" = "12px"),
+            textsize = "12px",
+            direction = "auto"
+        ),
+        group = "Confirmados"
+    ) |>
+    # Leyenda de color
+    addLegend(position = "bottomright",
+        pal      = pal,
+        values   = ~n,
+        title    = "Casos<br>Confirmados",
+        opacity  = 0.8
+    ) |>
+    # Control de capas
+    addLayersControl(baseGroups    = c("Positron", "Satelite", 
+                          "OpenStreetMap", "Dark", 
+                          "Topografico"),
+                     overlayGroups = c("Confirmados"),
+                     options = layersControlOptions(collapsed = TRUE)) |>
+    addScaleBar(position = "bottomleft") |>
+    hideGroup("") 
+```
+:::
+
+</div>
+
+
+
+<div class="columna">
+<div class="column-header"> Serotipo 2 </div>
+
+
+::: grid-card
+```{r den2}
+load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+
+library(leaflet)
+library(leaflet.extras)
+
+data <- den
+data <- data |> 
+    #dplyr::select(dplyr::all_of(var)) |>
+    dplyr::mutate(n = DENV2) |>
+    dplyr::filter(n >= 1)
+
+
+# Paleta de color continua
+pal <- leaflet::colorNumeric(palette = viridis::viridis(10,
+                                                        option = "D"),
+                             domain = data$n)
+
+# Escala de radio proporcional
+radio <- function(x, r_min = 4, r_max = 20) {
+    r_min + (x - min(x)) / (max(x) - min(x)) * (r_max - r_min)
+}
+
+leaflet(data) |>
+    # Capas base
+    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
+    addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
+    addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
+    addProviderTiles("Esri.WorldTopoMap",     group = "Topografico") |>
+    # Círculos proporcionales
+    addCircleMarkers(
+        radius       = ~radio(n),
+        color        = "white",
+        weight       = 0.5,
+        fillColor    = ~pal(n),
+        fillOpacity  = 0.8,
+        popup = ~paste0(
+            "<b>Localidad:</b> ", cvegeo, "<br>",
+            "<b>Confirmados:</b> ", "confirmado" , "<br>",
+            "<b>Probables:</b> ", probables, "<br>",
+            "<b>DNG:</b> ", DNG, " | <b>DCSA:</b> ", DCGA, " | <b>DG:</b> ", DG, "<br>",
+            "<b>DENV2:</b> ", DENV2, " | <b>DENV3:</b> ", DENV3),
+        label = ~paste0(cvegeo, ": ", n, " Probables"),
+        labelOptions = labelOptions(
+            style = list("font-size" = "12px"),
+            textsize = "12px",
+            direction = "auto"
+        ),
+        group = "Confirmados"
+    ) |>
+    # Leyenda de color
+    addLegend(position = "bottomright",
+        pal      = pal,
+        values   = ~n,
+        title    = "Casos<br> Serotipo 2",
+        opacity  = 0.8
+    ) |>
+    # Control de capas
+    addLayersControl(baseGroups    = c("Positron", "Satelite", 
+                          "OpenStreetMap", "Dark", 
+                          "Topografico"),
+                     overlayGroups = c("Serotipo 2"), # modify
+                     options = layersControlOptions(collapsed = TRUE)) |>
+    addScaleBar(position = "bottomleft") |>
+    hideGroup("") 
+    
+
+```
+
+:::
+
+
+</div>
+<div class="columna"><div class="column-header"> Serotipo 3 </div>
+
+::: grid-card
+```{r den3}
+
+
+load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+
+library(leaflet)
+library(leaflet.extras)
+
+data <- den
+data <- data |> 
+    #dplyr::select(dplyr::all_of(var)) |>
+    dplyr::mutate(n = DENV3) |>
+    dplyr::filter(n >= 1)
+
+
+# Paleta de color continua
+pal <- leaflet::colorNumeric(palette = viridis::viridis(10,
+                                                        option = "D"),
+                             domain = data$n)
+
+# Escala de radio proporcional
+radio <- function(x, r_min = 4, r_max = 20) {
+    r_min + (x - min(x)) / (max(x) - min(x)) * (r_max - r_min)
+}
+
+leaflet(data) |>
+    # Capas base
+    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
+    addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
+    addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
+    addProviderTiles("Esri.WorldTopoMap",     group = "Topografico") |>
+    # Círculos proporcionales
+    addCircleMarkers(
+        radius       = ~radio(n),
+        color        = "white",
+        weight       = 0.5,
+        fillColor    = ~pal(n),
+        fillOpacity  = 0.8,
+        popup = ~paste0(
+            "<b>Localidad:</b> ", cvegeo, "<br>",
+            "<b>Confirmados:</b> ", "confirmado" , "<br>",
+            "<b>Probables:</b> ", probables, "<br>",
+            "<b>DNG:</b> ", DNG, " | <b>DCSA:</b> ", DCGA, " | <b>DG:</b> ", DG, "<br>",
+            "<b>DENV2:</b> ", DENV2, " | <b>DENV3:</b> ", DENV3),
+        label = ~paste0(cvegeo, ": ", "Serotipo 3 = ", n),
+        labelOptions = labelOptions(
+            style = list("font-size" = "12px"),
+            textsize = "12px",
+            direction = "auto"
+        ),
+        group = "Serotipo 3"
+    ) |>
+    # Leyenda de color
+    addLegend(position = "bottomright",
+              pal      = pal,
+              values   = ~n,
+              title    = "Casos<br> Serotipo 3", # modify
+              opacity  = 0.8) |>
+    # Control de capas
+    addLayersControl(baseGroups    = c("Positron", "Satelite", 
+                          "OpenStreetMap", "Dark", 
+                          "Topografico"),
+                     overlayGroups = c("Serotipo 3"), # modify
+                     options = layersControlOptions(collapsed = TRUE)) |>
+    addScaleBar(position = "bottomleft") |>
+    hideGroup("") 
+    
+
+```
+
+:::
+
+</div>
+:::::::::::::::::::::
 
 
 ###  [**Focos de Transmisión**]{style="color:#611232"}
