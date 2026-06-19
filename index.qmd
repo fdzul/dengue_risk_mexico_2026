@@ -147,7 +147,7 @@ epidemiological_channel(data = x, year = "2026")
 </html>
 
 
-### [**Distribucion Espacial**]{style="color:#611232"}
+### [**Distribución Espacial**]{style="color:#611232"}
 
 
 ```{=html}
@@ -642,15 +642,27 @@ leaflet(data) |>
 ```{r focos_transmision_activa, echo=FALSE}
 
 # Step 1. make the tible link ####
-link <- tibble::tibble(CVE_ENT = c("03","16","18", "23", "25", "26", "27", "30"),
+link <- tibble::tibble(CVE_ENT = c("03","04","06","07",
+                                   "11","12", "14",
+                                   "16","18", "20",
+                                   "23", "25", "26", "27", 
+                                   "30", "31"),
                        link = c("https://inquisitive-marshmallow-a2510b.netlify.app",
+                                "https://singular-syrniki-817969.netlify.app",
+                                "https://cute-jalebi-787634.netlify.app", # 06 colima
+                                "https://bejewelled-jalebi-fc0c2c.netlify.app", # 07 Chiapas
+                                "https://dancing-mooncake-edf9db.netlify.app", # 11 guanajuato
+                                "https://gilded-vacherin-b02caa.netlify.app", # 12 guerrero
+                                "https://phenomenal-cobbler-9697a5.netlify.app", # 14 jalisco
                                 "https://jazzy-axolotl-eee74e.netlify.app",
                                 "https://splendid-sawine-3c5317.netlify.app",
+                                "https://stately-paletas-0d3982.netlify.app", # 20 Oaxaca
                                 "https://silver-paletas-6d89dd.netlify.app",
                                 "https://dapper-bubblegum-16b79a.netlify.app",
                                 "https://magnificent-boba-378005.netlify.app",
                                 "https://polite-lily-6140a2.netlify.app",
-                                "https://marvelous-pie-045c03.netlify.app"))
+                                "https://marvelous-pie-045c03.netlify.app",
+                                "https://sprightly-kheer-4bfc18.netlify.app"))
 
 # Step 2. left joint ####
 mex_link <- dplyr::left_join(x = link,
