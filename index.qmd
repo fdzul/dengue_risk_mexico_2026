@@ -675,8 +675,6 @@ mex_link <- dplyr::left_join(x = link,
     sf::st_set_geometry(value = "geometry") 
 
 
-
-
 # Step 1. load the AGEE ####
 mex <- rgeomex::AGEE_inegi19_mx |>
     dplyr::select(-NOMGEO)
