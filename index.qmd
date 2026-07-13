@@ -23,6 +23,140 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/heatmap_hospitaliza
 source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/heatmap_dengue.R")
 source("~/Dropbox/r_developments/r_new_functions/3.Functions/static_bump_map.R")
 source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiological_channel.R")
+
+######
+# Step 1.1. load the dengue dataset #####
+den <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/etvs_2026/DENGUE2_.txt",
+                         encoding = "Latin-1") |>
+    dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
+    #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
+    dplyr::mutate(CVE_EDO_REP = stringr::str_pad(CVE_EDO_REP,
+                                                 width = 2,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_MPO_REP = stringr::str_pad(CVE_MPO_REP,
+                                                 width = 3,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_LOC_REP = stringr::str_pad(CVE_LOC_REP,
+                                                 width = 4,
+                                                 side = "left",
+                                                 pad = "0")) |>
+    dplyr::filter(CVE_EDO_REP != "00") |>
+    dplyr::filter(CVE_MPO_REP != "00=") |>
+    dplyr::filter(CVE_LOC_REP != "0000") |>
+    dplyr::mutate(cvegeo = paste0(CVE_EDO_REP,CVE_MPO_REP,CVE_LOC_REP))|>
+    dplyr::select(ANO, SEM, cvegeo, ESTATUS_CASO, DES_DIAG_FINAL,DENGUE_SER_TRIPLEX) |>
+    #dplyr::mutate(ESTATUS_CASO = ifelse(ESTATUS_CASO == 1, "Probable", "Confirmado")) |>
+    #dplyr::filter(DES_DIAG_FINAL  %in% c("DENGUE NO GRAVE", "DENGUE GRAVE","DENGUE CON SIGNOS DE ALARMA")) |>
+    #dplyr::mutate(DES_DIAG_FINAL = dplyr::case_when(DES_DIAG_FINAL == "DENGUE CON SIGNOS DE ALARMA" ~ "DCSA",
+    #                                                DES_DIAG_FINAL == "DENGUE GRAVE" ~ "DG",
+    #                                               DES_DIAG_FINAL == "DENGUE NO GRAVE" ~ "DNG")) |>
+    dplyr::mutate(DENGUE_SER_TRIPLEX  = dplyr::case_when(DENGUE_SER_TRIPLEX == 1 ~ "DENV1",
+                                                         DENGUE_SER_TRIPLEX == 2 ~ "DENV2",
+                                                         DENGUE_SER_TRIPLEX == 3 ~ "DENV3",
+                                                         DENGUE_SER_TRIPLEX == 4 ~ "DENV4")) |>
+    dplyr::filter(ANO == 2026) |>
+    dplyr::group_by(cvegeo) |>
+    dplyr::summarise(probables =  dplyr::n(),
+                     confirmado = sum(ESTATUS_CASO == 2, na.rm = T),
+                     DNG = sum(DES_DIAG_FINAL == "DENGUE NO GRAVE", na.rm = T),
+                     DCGA = sum(DES_DIAG_FINAL == "DENGUE CON SIGNOS DE ALARMA", na.rm = T),
+                     DG = sum(DES_DIAG_FINAL == "DENGUE GRAVE", na.rm = T),
+                     DENV1 = sum(DENGUE_SER_TRIPLEX == "DENV1", na.rm = T),
+                     DENV2 = sum(DENGUE_SER_TRIPLEX == "DENV2", na.rm = T),
+                     DENV3 = sum(DENGUE_SER_TRIPLEX == "DENV3", na.rm = T),
+                     DENV4 = sum(DENGUE_SER_TRIPLEX == "DENV4", na.rm = T))
+
+
+
+# PROCEDENCIA
+# ES_MIGRANTE
+
+#table(den$DENGUE_SER_TRIPLEX)
+# DENV1 DENV2 DENV3 DENV4 
+# 1    67   768     4 
+#sum(den$DENV1, na.rm = T)
+#sum(den$DENV2,na.rm = T)
+#sum(den$DENV3, na.rm = T)
+#sum(den$DENV4, na.rm = T)
+#table(den$DES_DIAG_FINAL)
+# Step 1.2. load chikungunya datast #####
+chik <- data.table::fread(path_sinave,
+                          encoding = "Latin-1") |>
+    dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
+    #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
+    dplyr::mutate(CVE_EDO_REP = stringr::str_pad(CVE_EDO_REP,
+                                                 width = 2,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_MPO_REP = stringr::str_pad(CVE_MPO_REP,
+                                                 width = 3,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_LOC_REP = stringr::str_pad(CVE_LOC_REP,
+                                                 width = 4,
+                                                 side = "left",
+                                                 pad = "0")) |>
+    dplyr::filter(CVE_EDO_REP != "00") |>
+    dplyr::filter(CVE_MPO_REP != "00=") |>
+    dplyr::filter(CVE_LOC_REP != "0000") |>
+    dplyr::mutate(cvegeo = paste0(CVE_EDO_REP,CVE_MPO_REP,CVE_LOC_REP)) |>
+    dplyr::filter(ANO == 2026) |>
+    dplyr::group_by(cvegeo) |>
+    dplyr::summarise(probable = dplyr::n(),
+                     confirmado = sum(ESTATUS_CASO == 2, na.rm = T))
+# Step 1.3. load the zika dataset #####
+zika <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/etvs_2026/ZIKA2_.txt",
+                          encoding = "Latin-1") |>
+    dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
+    #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
+    dplyr::mutate(CVE_EDO_REP = stringr::str_pad(CVE_EDO_REP,
+                                                 width = 2,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_MPO_REP = stringr::str_pad(CVE_MPO_REP,
+                                                 width = 3,
+                                                 side = "left",
+                                                 pad = "0"),
+                  CVE_LOC_REP = stringr::str_pad(CVE_LOC_REP,
+                                                 width = 4,
+                                                 side = "left",
+                                                 pad = "0")) |>
+    dplyr::filter(CVE_EDO_REP != "00") |>
+    dplyr::filter(CVE_MPO_REP != "00=") |>
+    dplyr::filter(CVE_LOC_REP != "0000") |>
+    dplyr::mutate(cvegeo = paste0(CVE_EDO_REP,CVE_MPO_REP,CVE_LOC_REP)) |>
+    dplyr::filter(ANO == 2026) |>
+    dplyr::group_by(cvegeo) |>
+    dplyr::summarise(probable = dplyr::n(),
+                     confirmado = sum(ESTATUS_CASO == 2, na.rm = T))
+
+# Step 4. bind the dataset with AGEM ####
+loc <- rgeomex::iter_2020_loc |>
+    dplyr::mutate(cvegeo = paste0(entidad, mun, loc)) |>
+    dplyr::select(cvegeo, longitud, latitud, altitud, pobtot)
+den <- dplyr::left_join(x = den,
+                        y = loc,
+                        by = c("cvegeo")) |>
+    dplyr::filter(!is.na(longitud)) |>
+    sf::st_as_sf(coords = c("longitud", "latitud"),
+                 crs = 4326)
+
+
+zika <- dplyr::left_join(x = zika,
+                         y = loc,
+                         by = c("cvegeo")) |>
+    dplyr::filter(!is.na(longitud)) |>
+    sf::st_as_sf(coords = c("longitud", "latitud"),
+                 crs = 4326)
+chik <- dplyr::left_join(x = chik,
+                         y = loc,
+                         by = c("cvegeo")) |>
+    dplyr::filter(!is.na(longitud)) |>
+    sf::st_as_sf(coords = c("longitud", "latitud"),
+                 crs = 4326)
+
 ```
 
 # **Arbovirosis**
@@ -240,7 +374,7 @@ epidemiological_channel(data = x, year = "2026")
 ::: grid-card
 
 ```{r probables}
-load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+#load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
 
 library(leaflet)
 library(leaflet.extras)
@@ -317,7 +451,7 @@ leaflet(data) |>
 ::: grid-card
 
 ```{r confirmados}
-load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+#load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
 
 library(leaflet)
 library(leaflet.extras)
@@ -395,7 +529,7 @@ leaflet(data) |>
 
 ::: grid-card
 ```{r den2}
-load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+#load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
 
 library(leaflet)
 library(leaflet.extras)
@@ -474,7 +608,7 @@ leaflet(data) |>
 ```{r den3}
 
 
-load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
+#load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
 
 library(leaflet)
 library(leaflet.extras)
