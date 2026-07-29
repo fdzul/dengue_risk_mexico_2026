@@ -26,7 +26,7 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiolog
 
 ######
 # Step 1.1. load the dengue dataset #####
-den <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/etvs_2026/DENGUE2_.txt",
+den <- data.table::fread(path_sinave,
                          encoding = "Latin-1") |>
     dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
     #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
