@@ -82,7 +82,7 @@ den <- data.table::fread(path_sinave,
 #sum(den$DENV4, na.rm = T)
 #table(den$DES_DIAG_FINAL)
 # Step 1.2. load chikungunya datast #####
-chik <- data.table::fread(path_sinave,
+chik <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/chik/2026/CHIKUNGUNYA2_.txt",
                           encoding = "Latin-1") |>
     dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
     #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
@@ -107,7 +107,7 @@ chik <- data.table::fread(path_sinave,
     dplyr::summarise(probable = dplyr::n(),
                      confirmado = sum(ESTATUS_CASO == 2, na.rm = T))
 # Step 1.3. load the zika dataset #####
-zika <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/etvs_2026/ZIKA2_.txt",
+zika <- data.table::fread("/Users/fdzul/Library/CloudStorage/Dropbox/dataset/dge/zik/2026/ZIKA2_.txt",
                           encoding = "Latin-1") |>
     dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
     #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
