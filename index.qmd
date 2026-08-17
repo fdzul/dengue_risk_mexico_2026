@@ -776,12 +776,13 @@ leaflet(data) |>
 ```{r focos_transmision_activa, echo=FALSE}
 
 # Step 1. make the tible link ####
-link <- tibble::tibble(CVE_ENT = c("03","04","06","07",
+link <- tibble::tibble(CVE_ENT = c("01","03","04","06","07",
                                    "11","12", "14",
                                    "16","18", "20",
                                    "23", "25", "26", "27", 
                                    "30", "31"),
-                       link = c("https://inquisitive-marshmallow-a2510b.netlify.app",
+                       link = c("https://chimerical-kitsune-1b8f97.netlify.app", # 01 Aguascalientes
+                                "https://inquisitive-marshmallow-a2510b.netlify.app",
                                 "https://singular-syrniki-817969.netlify.app",
                                 "https://cute-jalebi-787634.netlify.app", # 06 colima
                                 "https://bejewelled-jalebi-fc0c2c.netlify.app", # 07 Chiapas
