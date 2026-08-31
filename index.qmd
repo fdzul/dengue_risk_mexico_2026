@@ -236,17 +236,7 @@ heatmap_confirmados(dataset = x,
 
 #### [**Casos Confirmados por Estado**]{style="color:#611232"}
 
-```{r bumpmap_national, out.width="100%", out.height="90%"}
-static_bump_map(dataset = x,
-                year = "2026",
-                state = TRUE,
-                size_text_value = 2,
-                size_text_country = 2,
-                country_text_x = 0.5,
-                country_text_y = 0.8,
-                line_size = 1.5,
-                pal_vir = "viridis")
-```
+![](bumbum_map.jpg)
 
 #### [**Casos Confirmados por Municipio**]{style="color:#611232"}
 
