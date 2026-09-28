@@ -9,6 +9,8 @@ theme: custom.scss
 ---
 
 ```{r setup, echo=FALSE}
+library(mapview)
+mapviewOptions(basemaps = c("Esri.WorldGrayCanvas","Stadia.AlidadeSmoothDark","OpenStreetMap", "Esri.WorldImagery", "OpenTopoMap"))
 # Step 1. load the dengue dataset ####
 path_sinave <- "/Users/fdzul/Documents/geocoding_mx_2026_dengue/1.data/semana_actual/DENGUE2_.txt"
 
