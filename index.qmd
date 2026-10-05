@@ -367,7 +367,7 @@ epidemiological_channel(data = x, year = "2026")
 
 ```{r probables}
 #load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
-
+mapviewOptions(basemaps = c("Esri.WorldGrayCanvas","Stadia.AlidadeSmoothDark","OpenStreetMap", "Esri.WorldImagery", "OpenTopoMap"))
 library(leaflet)
 library(leaflet.extras)
 
@@ -390,7 +390,7 @@ radio <- function(x, r_min = 4, r_max = 20) {
 
 leaflet(data) |>
     # Capas base
-    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldGrayCanvas",      group = "Positron") |>
     addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
     addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
     addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
@@ -444,7 +444,6 @@ leaflet(data) |>
 
 ```{r confirmados}
 #load("~/Library/CloudStorage/Dropbox/dataset/automatic_read_sinave/8.RData/den/dengue_loc/2026/dengue_loc_2026.RData")
-
 library(leaflet)
 library(leaflet.extras)
 
@@ -467,7 +466,7 @@ radio <- function(x, r_min = 4, r_max = 20) {
 
 leaflet(data) |>
     # Capas base
-    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldGrayCanvas",      group = "Positron") |>
     addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
     addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
     addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
@@ -545,7 +544,7 @@ radio <- function(x, r_min = 4, r_max = 20) {
 
 leaflet(data) |>
     # Capas base
-    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldGrayCanvas",      group = "Positron") |>
     addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
     addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
     addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
@@ -624,7 +623,7 @@ radio <- function(x, r_min = 4, r_max = 20) {
 
 leaflet(data) |>
     # Capas base
-    addProviderTiles("CartoDB.Positron",      group = "Positron") |>
+    addProviderTiles("Esri.WorldGrayCanvas",      group = "Positron") |>
     addProviderTiles("Esri.WorldImagery",     group = "Satelite") |>
     addProviderTiles("OpenStreetMap",         group = "OpenStreetMap") |>
     addProviderTiles("CartoDB.DarkMatter",    group = "Dark") |>
