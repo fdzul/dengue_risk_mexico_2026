@@ -767,31 +767,35 @@ leaflet(data) |>
 ```{r focos_transmision_activa, echo=FALSE}
 
 # Step 1. make the tible link ####
-link <- tibble::tibble(CVE_ENT = c("01","03","04","06","07",
-                                   "11","12", "14",
+link <- tibble::tibble(CVE_ENT = c("01","03","04","05",
+                                   "06","07", "08",
+                                   "11","12", "13","14",
                                    "16","17",
                                    "18", "20",
                                    "23", "25", "26", "27", 
                                    "30", "31", "32"),
-                       link = c("https://chimerical-kitsune-1b8f97.netlify.app", # 01 Aguascalientes
-                                "https://inquisitive-marshmallow-a2510b.netlify.app",
-                                "https://singular-syrniki-817969.netlify.app",
-                                "https://cute-jalebi-787634.netlify.app", # 06 colima
-                                "https://bejewelled-jalebi-fc0c2c.netlify.app", # 07 Chiapas
-                                "https://dancing-mooncake-edf9db.netlify.app", # 11 guanajuato
-                                "https://gilded-vacherin-b02caa.netlify.app", # 12 guerrero
-                                "https://phenomenal-cobbler-9697a5.netlify.app", # 14 jalisco
-                                "https://jazzy-axolotl-eee74e.netlify.app",      # 16 Michoacan
-                                "https://starlit-bublanina-043e74.netlify.app", # 17 Morelos
-                                "https://splendid-sawine-3c5317.netlify.app", 
-                                "https://stately-paletas-0d3982.netlify.app", # 20 Oaxaca
-                                "https://silver-paletas-6d89dd.netlify.app",
-                                "https://dapper-bubblegum-16b79a.netlify.app",
-                                "https://magnificent-boba-378005.netlify.app",
-                                "https://polite-lily-6140a2.netlify.app",
-                                "https://marvelous-pie-045c03.netlify.app",
-                                "https://sprightly-kheer-4bfc18.netlify.app",
-                                "https://willowy-cendol-a78317.netlify.app"))
+                       link = c("https://chimerical-kitsune-1b8f97.netlify.app",       # 01 Aguascalientes
+                                "https://inquisitive-marshmallow-a2510b.netlify.app",  # 03 Bajacalifornia Sur
+                                "https://singular-syrniki-817969.netlify.app",         # 04 Campeche
+                                "https://dancing-bombolone-4dba43.netlify.app",        # 05 Coahuila
+                                "https://cute-jalebi-787634.netlify.app",              # 06 colima
+                                "https://bejewelled-jalebi-fc0c2c.netlify.app",        # 07 Chiapas
+                                "https://comforting-haupia-04107f.netlify.app",        # 08 Chihuahua
+                                "https://dancing-mooncake-edf9db.netlify.app",         # 11 guanajuato
+                                "https://gilded-vacherin-b02caa.netlify.app",          # 12 guerrero
+                                "https://grand-nasturtium-fe9edf.netlify.app",         # 13 Hidalgo
+                                "https://phenomenal-cobbler-9697a5.netlify.app",       # 14 jalisco
+                                "https://jazzy-axolotl-eee74e.netlify.app",            # 16 Michoacan
+                                "https://starlit-bublanina-043e74.netlify.app",        # 17 Morelos
+                                "https://splendid-sawine-3c5317.netlify.app",          # 18 Nayarit
+                                "https://stately-paletas-0d3982.netlify.app",          # 20 Oaxaca
+                                "https://silver-paletas-6d89dd.netlify.app",           # 23 Quintana Roo
+                                "https://dapper-bubblegum-16b79a.netlify.app",         # 25 Sinaloa
+                                "https://magnificent-boba-378005.netlify.app",         # 26 Sonora
+                                "https://polite-lily-6140a2.netlify.app",              # 27 Tabasco
+                                "https://marvelous-pie-045c03.netlify.app",            # 30 Veracruz
+                                "https://sprightly-kheer-4bfc18.netlify.app",          # 31 Yucatan
+                                "https://dancing-bombolone-4dba43.netlify.app"))
 
 # Step 2. left joint ####
 mex_link <- dplyr::left_join(x = link,
