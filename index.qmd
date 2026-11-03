@@ -29,7 +29,9 @@ source("~/Dropbox/r_developments/r_new_functions/3.Functions/boldenr/epidemiolog
 ######
 # Step 1.1. load the dengue dataset #####
 den <- data.table::fread(path_sinave,
-                         encoding = "Latin-1") |>
+                         encoding = "Latin-1",
+                         quote="",
+                       fill=TRUE) |>
     dplyr::filter(ESTATUS_CASO %in% c(1, 2)) |>
     #dplyr::filter(ES_MIGRANTE %in% c(2)) |>
     dplyr::mutate(CVE_EDO_REP = stringr::str_pad(CVE_EDO_REP,
@@ -197,7 +199,7 @@ chik <- dplyr::left_join(x = chik,
 #### [**Casos confirmados**]{style="color:#611232"}
 
 ```{r treemap,out.width="100%", out.height="100%"}
-densnv::mp_treemap(country = TRUE,
+densnv::plt_treemap(country = TRUE,
                    year = 2026,
                    snv_dataset = x)
 ```
@@ -238,7 +240,21 @@ heatmap_confirmados(dataset = x,
 
 #### [**Casos Confirmados por Estado**]{style="color:#611232"}
 
-![](bumbum_map.jpg)
+```{r bumpmap_mexico}
+densnv::mp_bumpmap(dataset = x, 
+                   year = 2026, 
+                   state = TRUE, 
+                   cve_edo = "20",
+                   label_spacing = 0.18, 
+                   axis_start = 0.01,
+                   size_text_value = 3, 
+                   size_text_country = 2.5,
+                   country_text_y = 0.005, 
+                   line_size = 0.8, 
+                   pal_vir = "viridis")
+```
+
+
 
 #### [**Casos Confirmados por Municipio**]{style="color:#611232"}
 
@@ -285,7 +301,7 @@ epidemiological_channel(data = x, year = "2026")
 /* Contenedor principal con scroll - tres COLUMNAS */
 .responsive-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;  /* Tres COLUMNAS iguales */
+  grid-template-columns: 1fr 1fr;  /* dos COLUMNAS iguales */
   gap: 25px;
   margin: 20px 0;
   max-height: 85vh;          /* Altura máxima para scroll */
