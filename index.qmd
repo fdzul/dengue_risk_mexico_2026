@@ -783,15 +783,16 @@ leaflet(data) |>
 ```{r focos_transmision_activa, echo=FALSE}
 
 # Step 1. make the tible link ####
-link <- tibble::tibble(CVE_ENT = c("01","03","04","05",
+link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
                                    "06","07", "08",
-                                   "11","12", "13","14",
-                                   "16","17",
-                                   "18", "20",
-                                   "23", "25", "26", "27", 
+                                   "11","12", "13","14","15",
+                                   "16","17","18", "19", "20",
+                                   "21","23","24", "25", 
+                                   "26", "27", 
                                    "30", "31", "32"),
                        link = c("https://chimerical-kitsune-1b8f97.netlify.app",       # 01 Aguascalientes
-                                "https://inquisitive-marshmallow-a2510b.netlify.app",  # 03 Bajacalifornia Sur
+                                "https://marvelous-haupia-c6b248.netlify.app",         # 02 Baja California
+                                "https://inquisitive-marshmallow-a2510b.netlify.app",  # 03 Baja California Sur
                                 "https://singular-syrniki-817969.netlify.app",         # 04 Campeche
                                 "https://dancing-bombolone-4dba43.netlify.app",        # 05 Coahuila
                                 "https://cute-jalebi-787634.netlify.app",              # 06 colima
@@ -801,11 +802,15 @@ link <- tibble::tibble(CVE_ENT = c("01","03","04","05",
                                 "https://gilded-vacherin-b02caa.netlify.app",          # 12 guerrero
                                 "https://grand-nasturtium-fe9edf.netlify.app",         # 13 Hidalgo
                                 "https://phenomenal-cobbler-9697a5.netlify.app",       # 14 jalisco
+                                "https://jocular-raindrop-bef372.netlify.app",         # 15 Estado de México
                                 "https://jazzy-axolotl-eee74e.netlify.app",            # 16 Michoacan
                                 "https://starlit-bublanina-043e74.netlify.app",        # 17 Morelos
                                 "https://splendid-sawine-3c5317.netlify.app",          # 18 Nayarit
+                                "https://glittery-swan-7e7743.netlify.app",            # 19 Nuevo Leon
                                 "https://stately-paletas-0d3982.netlify.app",          # 20 Oaxaca
+                                "https://spiffy-gaufre-382ee0.netlify.app",            # 21 Puebla
                                 "https://silver-paletas-6d89dd.netlify.app",           # 23 Quintana Roo
+                                "https://majestic-rugelach-83ee27.netlify.app",        # 24 San Luis Potosi
                                 "https://dapper-bubblegum-16b79a.netlify.app",         # 25 Sinaloa
                                 "https://magnificent-boba-378005.netlify.app",         # 26 Sonora
                                 "https://polite-lily-6140a2.netlify.app",              # 27 Tabasco
