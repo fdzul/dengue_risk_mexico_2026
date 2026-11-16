@@ -788,7 +788,7 @@ link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
                                    "11","12", "13","14","15",
                                    "16","17","18", "19", "20",
                                    "21","23","24", "25", 
-                                   "26", "27", 
+                                   "26", "27", "28",
                                    "30", "31", "32"),
                        link = c("https://chimerical-kitsune-1b8f97.netlify.app",       # 01 Aguascalientes
                                 "https://marvelous-haupia-c6b248.netlify.app",         # 02 Baja California
@@ -814,6 +814,7 @@ link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
                                 "https://dapper-bubblegum-16b79a.netlify.app",         # 25 Sinaloa
                                 "https://magnificent-boba-378005.netlify.app",         # 26 Sonora
                                 "https://polite-lily-6140a2.netlify.app",              # 27 Tabasco
+                                "https://sage-flan-ee8370.netlify.app",                # 28 Tamaulipas
                                 "https://marvelous-pie-045c03.netlify.app",            # 30 Veracruz
                                 "https://sprightly-kheer-4bfc18.netlify.app",          # 31 Yucatan
                                 "https://dancing-bombolone-4dba43.netlify.app"))
