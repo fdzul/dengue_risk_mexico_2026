@@ -784,10 +784,10 @@ leaflet(data) |>
 
 # Step 1. make the tible link ####
 link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
-                                   "06","07", "08",
+                                   "06","07", "08", "10",
                                    "11","12", "13","14","15",
                                    "16","17","18", "19", "20",
-                                   "21","23","24", "25", 
+                                   "21","22","23","24", "25", 
                                    "26", "27", "28",
                                    "30", "31", "32"),
                        link = c("https://chimerical-kitsune-1b8f97.netlify.app",       # 01 Aguascalientes
@@ -798,6 +798,7 @@ link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
                                 "https://cute-jalebi-787634.netlify.app",              # 06 colima
                                 "https://bejewelled-jalebi-fc0c2c.netlify.app",        # 07 Chiapas
                                 "https://comforting-haupia-04107f.netlify.app",        # 08 Chihuahua
+                                "https://melodious-banoffee-487589.netlify.app",       # 10 Durango
                                 "https://dancing-mooncake-edf9db.netlify.app",         # 11 guanajuato
                                 "https://gilded-vacherin-b02caa.netlify.app",          # 12 guerrero
                                 "https://grand-nasturtium-fe9edf.netlify.app",         # 13 Hidalgo
@@ -809,6 +810,7 @@ link <- tibble::tibble(CVE_ENT = c("01", "02","03","04","05",
                                 "https://glittery-swan-7e7743.netlify.app",            # 19 Nuevo Leon
                                 "https://stately-paletas-0d3982.netlify.app",          # 20 Oaxaca
                                 "https://spiffy-gaufre-382ee0.netlify.app",            # 21 Puebla
+                                "https://sparkly-biscotti-a04fe8.netlify.app",         # Queretaro
                                 "https://silver-paletas-6d89dd.netlify.app",           # 23 Quintana Roo
                                 "https://majestic-rugelach-83ee27.netlify.app",        # 24 San Luis Potosi
                                 "https://dapper-bubblegum-16b79a.netlify.app",         # 25 Sinaloa
